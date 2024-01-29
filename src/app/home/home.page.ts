@@ -1,9 +1,7 @@
 import { InteractiveMessageComponent } from './../components/interactive-message/interactive-message.component';
 import { Component } from '@angular/core';
 import { PropertiesListService, Property } from '../services/properties-list.service';
-import { Router } from '@angular/router';
-import { IonNavLink, NavController } from '@ionic/angular';
-import { AddPropertyPage } from '../pages/add-property/add-property.page';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',

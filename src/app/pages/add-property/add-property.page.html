@@ -10,7 +10,17 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">add-property</ion-title>
+      <ion-title size="large">Add a property</ion-title>
     </ion-toolbar>
   </ion-header>
+
+  <form [formGroup]="form">
+    <div class="form-control">
+      <label for="name">Property Name</label>
+      <input
+        required minlength="5"
+        formControlName="name"
+        type="text" >
+    </div>
+  </form>
 </ion-content>

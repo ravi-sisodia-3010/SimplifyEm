@@ -13,7 +13,7 @@ const routes: Routes = [
   },
   {
     path: 'add-property',
-    loadChildren: () => import('./pages/add-property/add-property.module').then( m => m.AddPropertyPageModule)
+    loadComponent: () => import('./pages/add-property/add-property.page').then( m => m.AddPropertyPage)
   },
 ];
 
