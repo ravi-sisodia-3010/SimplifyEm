@@ -1,20 +1,26 @@
-<ion-header [translucent]="true">
+<!-- <ion-header [translucent]="true">
   <ion-toolbar color="primary">
     <ion-title>
       SimplifyEm
     </ion-title>
   </ion-toolbar>
-</ion-header>
+</ion-header> -->
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
+  <!-- <ion-header collapse="condense">
     <ion-toolbar color="primary">
       <ion-title size="large">SimplifyEm</ion-title>
     </ion-toolbar>
-  </ion-header>
+  </ion-header> -->
 
   <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+    <!-- <strong>Ready to create an app?</strong>
+    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p> -->
+    <ion-spinner class="loading" *ngIf="loading"></ion-spinner>
+    <interactive-message
+      *ngIf="interactiveMessage"
+      [message]="interactiveMessage.message"
+      [actionText]="interactiveMessage.actionText"
+      (action)="interactiveMessage.action()"/>
   </div>
 </ion-content>

@@ -11,6 +11,10 @@ const routes: Routes = [
     redirectTo: 'home',
     pathMatch: 'full'
   },
+  {
+    path: 'add-property',
+    loadChildren: () => import('./pages/add-property/add-property.module').then( m => m.AddPropertyPageModule)
+  },
 ];
 
 @NgModule({
