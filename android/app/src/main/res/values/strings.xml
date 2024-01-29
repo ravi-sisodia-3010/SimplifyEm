@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">SimplifyEM</string>
+    <string name="title_activity_main">SimplifyEM</string>
+    <string name="package_name">com.simplifyem.android</string>
+    <string name="custom_url_scheme">com.simplifyem</string>
+</resources>
