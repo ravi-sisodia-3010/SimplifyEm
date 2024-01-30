@@ -9,12 +9,10 @@ import { PropertyService, Property } from '../services/property.service';
   styleUrls: ['home.page.scss']
 })
 export class HomePage {
+  showAddMoreProperty = false
+  
   loading = false;
   properties: Property[] = [];
-  showAddMoreProperty = false
-
-  component?: Component
-
   interactiveMessage?: {
     message?: string,
     actionText: string,
@@ -70,11 +68,11 @@ export class HomePage {
     this.navController.navigateForward(['property', 'add'])
   }
 
-  onPropertyClicked(property?: Property) {
-    this.navController.navigateForward(['property-details', property])
+  onPropertyClicked = (property?: Property) => {
+    this.navController.navigateForward(['property', property?.id])
   }
 
-  onPropertyDeleteClicked(property: Property) {
+  onPropertyDeleteClicked = (property: Property) => {
     this.propertyService.deleteProperty(property)
   }
 }

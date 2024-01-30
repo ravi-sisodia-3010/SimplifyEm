@@ -67,7 +67,7 @@ export class AddPropertyPage {
         line1: value.address!.line1!,
         line2: value.address!.line2!,
         city: value.address!.city!,
-        state: value.address!.city!,
+        state: value.address!.state!,
         postalCode: value.address!.postalCode!,
         country: value.address!.country!
       },

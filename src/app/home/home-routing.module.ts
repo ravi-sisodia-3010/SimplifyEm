@@ -2,6 +2,7 @@ import { AddPropertyPage } from './../pages/add-property/add-property.page';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomePage } from './home.page';
+import { PropertyDetailsPage } from '../pages/property-details/property-details.page';
 
 const routes: Routes = [
   {
@@ -11,6 +12,10 @@ const routes: Routes = [
   {
     path: 'add',
     component: AddPropertyPage,
+  },
+  {
+    path: ':id',
+    component: PropertyDetailsPage,
   }
 ];
 

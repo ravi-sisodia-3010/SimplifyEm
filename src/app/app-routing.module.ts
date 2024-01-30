@@ -14,7 +14,6 @@ const routes: Routes = [
   {
     path: 'property',
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
-    // loadComponent: () => import('./pages/add-property/add-property.page').then( m => m.AddPropertyPage)
   },
 ];
 

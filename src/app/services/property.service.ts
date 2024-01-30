@@ -41,6 +41,19 @@ export class PropertyService {
     })
   }
 
+  getProperty(id: string) {
+    return new Promise<Property>((resolve, reject) => {
+      setTimeout(() => {
+        let properties = this.__getProperties().filter((property) => property.id == id)
+        if (properties.length == 0) {
+          reject({message: "No such property exists!"})
+        } else {
+          resolve(properties[0])
+        }
+      }, 400)
+    })
+  }
+
   addProperty(_property: PropertyWithoutId) {
     // localStorage.removeItem("propertyIdCounter")
     // localStorage.removeItem("properties")

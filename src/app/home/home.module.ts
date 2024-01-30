@@ -8,6 +8,7 @@ import { HomePageRoutingModule } from './home-routing.module';
 import { InteractiveMessageComponent } from '../components/interactive-message/interactive-message.component';
 import { PropertyListComponent } from '../components/property-list/property-list.component';
 import { AddPropertyPage } from '../pages/add-property/add-property.page';
+import { PropertyDetailsPage } from '../pages/property-details/property-details.page';
 
 
 @NgModule({
@@ -20,6 +21,10 @@ import { AddPropertyPage } from '../pages/add-property/add-property.page';
     InteractiveMessageComponent,
     PropertyListComponent
   ],
-  declarations: [HomePage, AddPropertyPage]
+  declarations: [
+    HomePage,
+    AddPropertyPage,
+    PropertyDetailsPage
+  ]
 })
 export class HomePageModule {}
