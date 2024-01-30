@@ -1,0 +1,59 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+			<ion-back-button></ion-back-button>
+		</ion-buttons>
+    <ion-buttons slot="end">
+			<ion-button color="primary" [disabled]="!form.valid" (click)="onSubmit()">
+        Add
+      </ion-button>
+		</ion-buttons>
+    <ion-title>Add Tenant</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Add Tenant</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <form [formGroup]="form" #f>
+    <ion-item-group>
+      <ion-item lines="none">
+        <ion-input
+          formControlName="name" [errorText]="getError('name', 'Tenant name')"
+          type="text" autocomplete="name"
+          label="Tenant Name" labelPlacement="floating" placeholder="Tenant Name"/>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-input
+          formControlName="rentAmount" [errorText]="getError('rentAmount', 'Rent Amount')"
+          type="number" autocomplete="currency"
+          label="Rent Amount" labelPlacement="floating" placeholder="Rent Amount"/>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-input
+          formControlName="depositAmount" [errorText]="getError('depositAmount', 'Deposit Amount')"
+          type="number" autocomplete="currency"
+          label="Deposit Amount" labelPlacement="floating" placeholder="Deposit Amount"/>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-input
+          formControlName="rentalAgreement" [errorText]="getError('rentalAgreement', 'Rental Agreement')"
+          type="file" accept="application/pdf" (change)="onFileSelected($event)"
+          label="Rental Agreement" labelPlacement="stacked" placeholder="Rental Agreement"/>
+      </ion-item>
+    </ion-item-group>
+  </form>
+  
+  <ion-alert
+    [isOpen]="alertOptions != undefined"
+    [header]="alertOptions?.header"
+    [subHeader]="alertOptions?.subHeader"
+    [message]="alertOptions?.message"
+    [buttons]="alertOptions?.buttons ?? []"
+    animated="true"
+  ></ion-alert>
+</ion-content>

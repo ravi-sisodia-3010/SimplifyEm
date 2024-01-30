@@ -5,7 +5,7 @@
 		</ion-buttons>
     <ion-buttons slot="end">
 			<ion-button color="primary" [disabled]="!form.valid" (click)="onSubmit()">
-      <!-- <ion-button color="primary" (click)="onSubmit()"> -->
+
         Add
       </ion-button>
 		</ion-buttons>
@@ -22,7 +22,7 @@
 
   <form [formGroup]="form" #f>
     <ion-item-group>
-      <ion-item>
+      <ion-item lines="none">
         <ion-input
           formControlName="name" [errorText]="nameInputError"
           label="Property Name" labelPlacement="floating" placeholder="Property Name"/>
@@ -34,32 +34,32 @@
         <ion-label>Address</ion-label>
       </ion-item-divider>
 
-      <ion-item>
+      <ion-item lines="none">
         <ion-input
           formControlName="line1" [errorText]="getAddressError('line1', 'Address Line 1')"
           label="Line 1" labelPlacement="floating" placeholder="Address Line 1" />
       </ion-item>
-      <ion-item>
+      <ion-item lines="none">
         <ion-input
           formControlName="line2" [errorText]="getAddressError('line2', 'Address Line 2')"
           label="Line 2" labelPlacement="floating" placeholder="Address Line 2" />
       </ion-item>
-      <ion-item>
+      <ion-item lines="none">
         <ion-input
           formControlName="city" [errorText]="getAddressError('city', 'City')"
           label="City" labelPlacement="floating" placeholder="City" />
       </ion-item>
-      <ion-item>
+      <ion-item lines="none">
         <ion-input
           formControlName="state" [errorText]="getAddressError('state', 'State')"
           label="State" labelPlacement="floating" placeholder="State" />
       </ion-item>
-      <ion-item>
+      <ion-item lines="none">
         <ion-input
           formControlName="country" [errorText]="getAddressError('country', 'Country')"
           label="Country" labelPlacement="floating" placeholder="Country" />
       </ion-item>
-      <ion-item>
+      <ion-item lines="none">
         <ion-input
           formControlName="postalCode" [errorText]="getAddressError('postalCode', 'Postal Code')"
           label="Postal Code" labelPlacement="floating" placeholder="Postal Code" />

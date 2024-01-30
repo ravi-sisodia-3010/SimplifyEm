@@ -13,8 +13,8 @@ const routes: Routes = [
   },
   {
     path: 'property',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
-  },
+    loadChildren: () => import('./pages/property/property-pages.module').then( m => m.PropertyPagesModule)
+  }
 ];
 
 @NgModule({

@@ -1,4 +1,4 @@
-import { PropertyWithoutId } from './../../services/property.service';
+import { PropertyWithoutId } from '../../../services/property.service';
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -44,7 +44,11 @@ export class AddPropertyPage {
   }
 
   getAddressError(key: string, label: String) {
-    let errors = this.form.get('address')?.get(key)?.errors
+    let input = this.form.get('address')?.get(key)
+    if (!(input?.touched && !input.valid)) {
+      return "Returning this text to display underline."
+    }
+    let errors = input?.errors
     if (errors?.['required']) {
       return `${label} is required`
     } else if (errors?.['minlength']) {
@@ -71,7 +75,8 @@ export class AddPropertyPage {
         postalCode: value.address!.postalCode!,
         country: value.address!.country!
       },
-      photos: []
+      photos: [],
+      tenants: []
     }
     try {
       this.propertyService.addProperty(property)

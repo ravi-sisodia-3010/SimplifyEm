@@ -1,3 +1,5 @@
+import { FileUploadService } from './file-upload.service';
+import { TenantService, TenantWithoutId } from './tenant.service';
 import { EventEmitter, Injectable } from '@angular/core';
 
 @Injectable({
@@ -7,12 +9,20 @@ export class PropertyService {
 
   public propertyListUpdated = new EventEmitter()
 
-  private __saveProperties(properties: Property[]) {
+  constructor(
+    private tenantService: TenantService,
+    private fileUploadService: FileUploadService
+  ) {
+    // localStorage.removeItem('properties')
+    // localStorage.removeItem('propertyIdCounter')
+  }
+
+  private __save(properties: Property[]) {
     localStorage.setItem('properties', JSON.stringify(properties))
     this.propertyListUpdated.emit()
   }
 
-  private __getProperties(): Property[] {
+  private __get(): Property[] {
     let propertiesStr = localStorage.getItem('properties')
     let properties: Property[]
     if (propertiesStr) {
@@ -23,19 +33,32 @@ export class PropertyService {
     return properties
   }
 
+  private __getProperty(id: string): Property | null {
+    let properties = this.__get().filter((property) => property.id == id)
+    if (properties.length == 0) {
+      return null
+    } else {
+      return properties[0]
+    }
+  }
+
+  private __getMessage(error: unknown) {
+    if (typeof error === 'string') {
+      return error
+    } else if (error instanceof Error) {
+      return error.message
+    } else {
+      return "Something went wrong. Please try again later!"
+    }
+  }
+
   getProperties() {
     return new Promise<Property[]>((resolve, reject) => {
       setTimeout(() => {
         try {
-          resolve(this.__getProperties())
+          resolve(this.__get())
         } catch (error) {
-          if (typeof error === 'string') {
-            reject({message: error})
-          } else if (error instanceof Error) {
-            reject({message: error.message})
-          } else {
-            reject({message: "Something went wrong. Please try again later!"})
-          }
+          reject({message: this.__getMessage(error)})
         }
       }, 400)
     })
@@ -44,40 +67,39 @@ export class PropertyService {
   getProperty(id: string) {
     return new Promise<Property>((resolve, reject) => {
       setTimeout(() => {
-        let properties = this.__getProperties().filter((property) => property.id == id)
-        if (properties.length == 0) {
-          reject({message: "No such property exists!"})
+        let property = this.__getProperty(id)
+        if (property) {
+          resolve(property)
         } else {
-          resolve(properties[0])
+          reject({message: "No such property exists!"})
         }
       }, 400)
     })
   }
 
   addProperty(_property: PropertyWithoutId) {
-    // localStorage.removeItem("propertyIdCounter")
-    // localStorage.removeItem("properties")
-
     let id = parseInt(localStorage.getItem("propertyIdCounter") ?? "0")
-    localStorage.setItem("propertyIdCounter", "" + (id + 1))
+    let newId = "" + (id + 1)
 
-    let property: Property = {
-      id: "" + (id + 1),
+    let properties = this.__get()
+    properties.push({
+      id: newId,
       ..._property
-    }
+    })
+    this.__save(properties)
 
-    let properties = this.__getProperties()
-    properties.push(property)
-    this.__saveProperties(properties)
+    localStorage.setItem("propertyIdCounter", newId)
   }
 
   updateProperty(property: Property) {
-    let properties = this.__getProperties()
-    properties = properties.filter((property) => {
-      return property.id != property.id
-    })
-    properties.push(property)
-    this.__saveProperties(properties)
+    let properties = this.__get()
+    let index = properties.findIndex((_property) => _property.id == property.id)
+    if (index) {
+      properties[index] = property
+    } else {
+      properties.push(property)
+    }
+    this.__save(properties)
   }
 
   deleteProperty(property: Property) {
@@ -85,11 +107,58 @@ export class PropertyService {
   }
 
   deletePropertyUsingId(id: string) {
-    let properties = this.__getProperties()
+    let properties = this.__get()
     properties = properties.filter((property) => {
       return property.id != id
     })
-    this.__saveProperties(properties)
+    this.__save(properties)
+  }
+
+  getTenants(property: Property) {
+    return this.tenantService.getTenants(property.tenants)
+  }
+
+  addTenant(tenant: TenantWithoutId, propertyId: string) {
+    return new Promise<string>((resolve, reject) => {
+      let properties = this.__get()
+      let index = properties.findIndex((_property) => _property.id == propertyId)
+      if (index == -1) {
+        return reject({message: "No such property exists!"})
+      }
+      try {
+        let tenantId = this.tenantService.addTenant(tenant)
+        properties[index].tenants.push(tenantId)
+        this.__save(properties)
+        resolve(tenantId)
+      } catch (error) {
+        reject({message: this.__getMessage(error)})
+      }
+    })
+  }
+
+  removeTenant(tenantId: string, propertyId: string) {
+    this.tenantService.deleteTenant(tenantId)
+
+    let properties = this.__get()
+    let index = properties.findIndex((property) => property.id == propertyId)
+    if (index == -1) {
+      return
+    }
+    properties[index].tenants = properties[index].tenants.filter(((id) => id != tenantId))
+    this.__save(properties)
+  }
+
+  updateRentAgreement(file: string, propertyId: string, tenantId: string) {
+    let fileName = `rentAgreement_${Date.now()}.pdf`
+    let path = `properties/${propertyId}/tenants/${tenantId}/${fileName}`
+    return new Promise<string>((resolve, reject) => {
+      this.fileUploadService.uploadFile(file, path).then((result) => {
+        this.tenantService.updateRentAgreement(path, tenantId)
+        resolve(result.uri)
+      }, (error) => {
+        reject(this.__getMessage(error))
+      })
+    })
   }
 }
 
@@ -103,19 +172,15 @@ export interface PropertyWithoutId {
 		postalCode: string,
 		country: string
 	},
-	photos: string[]
+	photos: string[],
+  tenants: string[]
 }
 
-export interface Property {
+export interface Property extends PropertyWithoutId {
+  id: string
+}
+
+export interface PropertyPhoto {
   id: string,
-	name: string,
-	address: {
-		line1: string,
-		line2: string
-		city: string,
-		state: string,
-		postalCode: string,
-		country: string
-	},
-	photos: string[]
+  url: string
 }
