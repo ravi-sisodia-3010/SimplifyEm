@@ -3,6 +3,12 @@
     <ion-buttons slot="start">
 			<ion-back-button></ion-back-button>
 		</ion-buttons>
+    <ion-buttons slot="end">
+			<!-- <ion-button color="primary" [disabled]="!form.valid" (click)="onSubmit()"> -->
+      <ion-button color="primary" (click)="onSubmit()">
+        Add
+      </ion-button>
+		</ion-buttons>
     <ion-title>Add a property</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -14,13 +20,58 @@
     </ion-toolbar>
   </ion-header>
 
-  <form [formGroup]="form">
-    <div class="form-control">
-      <label for="name">Property Name</label>
-      <input
-        required minlength="5"
-        formControlName="name"
-        type="text" >
-    </div>
+  <form [formGroup]="form" #f>
+    <ion-item-group>
+      <ion-item>
+        <ion-input
+          formControlName="name" [errorText]="nameInputError"
+          label="Property Name" labelPlacement="floating" placeholder="Property Name"/>
+      </ion-item>
+    </ion-item-group>
+
+    <ion-item-group formGroupName="address">
+      <ion-item-divider>
+        <ion-label>Address</ion-label>
+      </ion-item-divider>
+
+      <ion-item>
+        <ion-input
+          formControlName="line1" [errorText]="getAddressError('line1', 'Address Line 1')"
+          label="Line 1" labelPlacement="floating" placeholder="Address Line 1" />
+      </ion-item>
+      <ion-item>
+        <ion-input
+          formControlName="line2" [errorText]="getAddressError('line2', 'Address Line 2')"
+          label="Line 2" labelPlacement="floating" placeholder="Address Line 2" />
+      </ion-item>
+      <ion-item>
+        <ion-input
+          formControlName="city" [errorText]="getAddressError('city', 'City')"
+          label="City" labelPlacement="floating" placeholder="City" />
+      </ion-item>
+      <ion-item>
+        <ion-input
+          formControlName="state" [errorText]="getAddressError('state', 'State')"
+          label="State" labelPlacement="floating" placeholder="State" />
+      </ion-item>
+      <ion-item>
+        <ion-input
+          formControlName="country" [errorText]="getAddressError('country', 'Country')"
+          label="Country" labelPlacement="floating" placeholder="Country" />
+      </ion-item>
+      <ion-item>
+        <ion-input
+          formControlName="postalCode" [errorText]="getAddressError('postalCode', 'Postal Code')"
+          label="Postal Code" labelPlacement="floating" placeholder="Postal Code" />
+      </ion-item>
+    </ion-item-group>
   </form>
+
+  <!-- <ion-alert
+    trigger="present-alert"
+    header="A Short Title Is Best"
+    subHeader="A Sub Header Is Optional"
+    message="A message should be a short, complete sentence."
+    [buttons]="alertButtons"
+  ></ion-alert> -->
 </ion-content>

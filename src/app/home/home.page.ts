@@ -1,7 +1,7 @@
 import { InteractiveMessageComponent } from './../components/interactive-message/interactive-message.component';
 import { Component } from '@angular/core';
-import { PropertiesListService, Property } from '../services/properties-list.service';
 import { NavController } from '@ionic/angular';
+import { PropertyService, Property } from '../services/property.service';
 
 @Component({
   selector: 'app-home',
@@ -21,7 +21,7 @@ export class HomePage {
     action: (component?: InteractiveMessageComponent) => void
   }
 
-  constructor(private propertiesList: PropertiesListService,
+  constructor(private propertyService: PropertyService,
     private navController: NavController) {
     this.loadProperties();
   }
@@ -29,7 +29,7 @@ export class HomePage {
   loadProperties = () => {
     this.loading = true
     this.interactiveMessage = undefined
-    this.propertiesList.getProperties().then(
+    this.propertyService.getProperties().then(
       this.propertiesLoaded,
       this.failedToLoadProperties
     ).catch(() => {
