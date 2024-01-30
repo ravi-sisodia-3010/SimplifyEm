@@ -1,0 +1,25 @@
+<ion-list lines="inset">
+  <ion-item-sliding *ngFor="let property of properties">
+    <ion-item button (click)="onPropertyClicked(property)">
+      <div class="property-item-container">
+        <div class="property-item-image">
+          <ion-icon name="home-sharp" />
+        </div>
+        <div class="property-item-details">
+          <ion-text>
+            <h5>{{ property.name || "Property Name" }}</h5>
+          </ion-text>
+          <ion-text>
+            <p>{{ property.address.line1 || "Tenants Living: 0" }}</p>
+          </ion-text>
+        </div>
+      </div>
+    </ion-item>
+
+    <ion-item-options>
+      <ion-item-option color="danger" (click)="onPropertyDeleteClicked(property)">
+        <ion-icon slot="icon-only" name="trash"></ion-icon>
+      </ion-item-option>
+    </ion-item-options>
+</ion-item-sliding>
+</ion-list>

@@ -1,24 +1,14 @@
 import { PropertyWithoutId } from './../../services/property.service';
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AlertButton, AlertOptions, IonicModule, NavController } from '@ionic/angular';
-import { Property, PropertyService } from 'src/app/services/property.service';
+import { AlertOptions, IonicModule, NavController } from '@ionic/angular';
+import { PropertyService } from 'src/app/services/property.service';
 
 @Component({
   selector: 'add-property',
-  standalone: true,
   templateUrl: './add-property.page.html',
-  styleUrls: ['./add-property.page.scss'],
-  imports: [
-    CommonModule,
-    IonicModule,
-    ReactiveFormsModule,
-    FormsModule
-  ],
-  providers: [
-    PropertyService
-  ]
+  styleUrls: ['./add-property.page.scss']
 })
 export class AddPropertyPage {
   form = new FormGroup({

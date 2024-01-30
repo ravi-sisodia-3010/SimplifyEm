@@ -6,7 +6,7 @@ import { PropertyService, Property } from '../services/property.service';
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss'],
+  styleUrls: ['home.page.scss']
 })
 export class HomePage {
   loading = false;
@@ -21,8 +21,11 @@ export class HomePage {
     action: (component?: InteractiveMessageComponent) => void
   }
 
-  constructor(private propertyService: PropertyService,
-    private navController: NavController) {
+  constructor(
+    private propertyService: PropertyService,
+    private navController: NavController
+  ) {
+    propertyService.propertyListUpdated.subscribe(this.loadProperties)
     this.loadProperties();
   }
 
@@ -41,14 +44,14 @@ export class HomePage {
 
   propertiesLoaded = (properties: Property[]) => {
     this.loading = false
+    this.properties = properties
     if (properties.length == 0) {
       this.interactiveMessage = {
         message: "Looks like you haven't registered any property yet. Want to register one?",
         actionText: "Add Property",
-        action: this.userClickedAddProperty
+        action: this.onAddPropertyClicked
       }
     } else {
-      this.properties = properties
       this.interactiveMessage = undefined
     }
     this.showAddMoreProperty = true
@@ -63,7 +66,15 @@ export class HomePage {
     }
   }
 
-  userClickedAddProperty = () => {
-    this.navController.navigateForward(['add-property'])
+  onAddPropertyClicked = () => {
+    this.navController.navigateForward(['property', 'add'])
+  }
+
+  onPropertyClicked(property?: Property) {
+    this.navController.navigateForward(['property-details', property])
+  }
+
+  onPropertyDeleteClicked(property: Property) {
+    this.propertyService.deleteProperty(property)
   }
 }

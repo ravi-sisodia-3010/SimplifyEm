@@ -1,13 +1,15 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PropertyService {
 
+  public propertyListUpdated = new EventEmitter()
+
   private __saveProperties(properties: Property[]) {
-    console.log('properties:', properties)
     localStorage.setItem('properties', JSON.stringify(properties))
+    this.propertyListUpdated.emit()
   }
 
   private __getProperties(): Property[] {
@@ -50,12 +52,10 @@ export class PropertyService {
       id: "" + (id + 1),
       ..._property
     }
-    console.log('property:', property)
 
     let properties = this.__getProperties()
     properties.push(property)
     this.__saveProperties(properties)
-    console.log('property added')
   }
 
   updateProperty(property: Property) {

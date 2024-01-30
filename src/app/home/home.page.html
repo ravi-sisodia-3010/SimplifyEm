@@ -1,26 +1,39 @@
-<!-- <ion-header [translucent]="true">
+<ion-header [translucent]="true">
   <ion-toolbar color="primary">
     <ion-title>
       SimplifyEm
     </ion-title>
+    <ion-buttons slot="end">
+			<ion-button color="dark" *ngIf="showAddMoreProperty" (click)="onAddPropertyClicked()">
+        <ion-icon slot="icon-only" name="add" />
+      </ion-button>
+		</ion-buttons>
   </ion-toolbar>
-</ion-header> -->
+</ion-header>
 
 <ion-content [fullscreen]="true">
-  <!-- <ion-header collapse="condense">
+  <ion-header collapse="condense">
     <ion-toolbar color="primary">
-      <ion-title size="large">SimplifyEm</ion-title>
+      <ion-title size="large">
+        SimplifyEm
+      </ion-title>
     </ion-toolbar>
-  </ion-header> -->
+  </ion-header>
 
-  <div id="container">
-    <!-- <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p> -->
-    <ion-spinner class="loading" *ngIf="loading"></ion-spinner>
+  <div id="container" *ngIf="properties.length == 0">
+    <ion-spinner
+      class="loading"
+      *ngIf="loading"/>
     <interactive-message
       *ngIf="interactiveMessage"
       [message]="interactiveMessage.message"
       [actionText]="interactiveMessage.actionText"
       (action)="interactiveMessage.action()"/>
   </div>
+
+  <property-list
+      *ngIf="properties.length > 0"
+      [properties]="properties"
+      (onPropertyClicked)="onPropertyClicked($event)"
+      (onPropertyDeleteClicked)="onPropertyDeleteClicked($event)"/>
 </ion-content>
