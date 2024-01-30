@@ -91,6 +91,7 @@ export class AddPropertyPage {
           text: "Ok!",
           handler: () => {
             this.alertOptions = undefined
+            this.navController.back()
           }
         }]
       }
@@ -116,9 +117,8 @@ export class AddPropertyPage {
         text: "Retry",
         handler: () => {
           this.alertOptions = undefined
-          let page = this
-          setTimeout(function () {
-            page.onSubmit()
+          setTimeout(() => {
+            this.onSubmit()
           }, 100)
         }
       }, {
