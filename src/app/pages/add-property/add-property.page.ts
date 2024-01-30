@@ -2,7 +2,7 @@ import { PropertyWithoutId } from './../../services/property.service';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { IonicModule, NavController } from '@ionic/angular';
+import { AlertButton, AlertOptions, IonicModule, NavController } from '@ionic/angular';
 import { Property, PropertyService } from 'src/app/services/property.service';
 
 @Component({
@@ -32,6 +32,9 @@ export class AddPropertyPage {
       postalCode: new FormControl('', [Validators.required]),
     })
   })
+
+  alertOptions?: AlertOptions
+
   constructor(
     private navController: NavController,
     private propertyService: PropertyService) {
@@ -64,6 +67,9 @@ export class AddPropertyPage {
   }
 
   onSubmit() {
+    if (this.form.invalid) {
+      return this.failedToAddProperty("Please provide valid inputs.")
+    }
     let value = this.form.value
     let property: PropertyWithoutId = {
       name: value.name!,
@@ -79,9 +85,49 @@ export class AddPropertyPage {
     }
     try {
       this.propertyService.addProperty(property)
+      this.alertOptions = {
+        message: "Property successfully added.",
+        buttons: [{
+          text: "Ok!",
+          handler: () => {
+            this.alertOptions = undefined
+          }
+        }]
+      }
     } catch (error) {
-      console.log('Cannot add property. Error:', error)
-      // TODO: show alert
+      let message: string
+      if (typeof error === 'string') {
+        message = error
+      } else if (error instanceof Error) {
+        message = error.message
+      } else {
+        message = "Something went wrong. Please try again later!"
+      }
+
+      this.failedToAddProperty(message)
+    }
+  }
+
+  failedToAddProperty(message: string) {
+    this.alertOptions = {
+      header: "Failed to add property",
+      message: message,
+      buttons: [{
+        text: "Retry",
+        handler: () => {
+          this.alertOptions = undefined
+          let page = this
+          setTimeout(function () {
+            page.onSubmit()
+          }, 100)
+        }
+      }, {
+        text: "Cancel",
+        handler: () => {
+          this.alertOptions = undefined
+          this.navController.back()
+        }
+      }]
     }
   }
 }
