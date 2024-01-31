@@ -26,6 +26,8 @@ export class PropertyDetailsPage {
   pdfURL?: string
   pdfData?: SafeHtml
 
+  photoURLs: {[key: string]: string | Blob} = {}
+
   constructor(
     activatedRoute: ActivatedRoute,
     private propertyService: PropertyService,
@@ -61,6 +63,15 @@ export class PropertyDetailsPage {
     this.loading = false
     this.interactiveMessage = undefined
     this.propertyService.propertyListUpdated.subscribe(this.loadPropertyDetails)
+
+    this.property.photos.forEach((photo) => {
+      Filesystem.readFile({
+        path: photo,
+        directory: Directory.External
+      }).then((result) => {
+        this.photoURLs[photo] = `data:image/*;base64,${result.data}`
+      })
+    })
   }
 
   failedToLoadPropertyDetails = (error: {message: string}) => {
@@ -109,5 +120,12 @@ export class PropertyDetailsPage {
     this.pdfData = undefined
     this.pdfURL = undefined
     console.log('hideRentAgreement:', this.pdfURL)
+  }
+
+  getHeaderImage() {
+    if (!this.property || this.property.photos.length == 0) {
+      return '../../../assets/house-placeholder.jpg'
+    }
+    return this.photoURLs[this.property.photos[0]] ?? '../../../assets/house-placeholder.jpg'
   }
 }

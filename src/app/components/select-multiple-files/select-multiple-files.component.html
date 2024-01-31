@@ -13,7 +13,7 @@
       class="selected-file-container" >
       <ion-img
         class="selected-file-thumbnail"
-        src="{{sanitizedSrc(selectedFile)}}"  />
+        src="{{ sanitizedSrc(selectedFile) }}"  />
       <div class="selected-file-overlay"></div>
       <ion-icon class="selected-file-bin" name="trash" (click)="onDeleteFileClicked(i)" />
     </div>

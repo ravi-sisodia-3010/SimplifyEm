@@ -41,6 +41,7 @@ export class HomePage {
   }
 
   propertiesLoaded = (properties: Property[]) => {
+    console.log('propertiesLoaded:', properties)
     this.loading = false
     this.properties = properties
     if (properties.length == 0) {

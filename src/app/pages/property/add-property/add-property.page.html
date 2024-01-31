@@ -3,20 +3,27 @@
     <ion-buttons slot="start">
 			<ion-back-button></ion-back-button>
 		</ion-buttons>
+    <ion-title>Add a property</ion-title>
     <ion-buttons slot="end">
 			<ion-button color="primary" [disabled]="!form.valid" (click)="onSubmit()">
-
         Add
       </ion-button>
 		</ion-buttons>
-    <ion-title>Add a property</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
+    <ion-buttons slot="start">
+			<ion-back-button></ion-back-button>
+		</ion-buttons>
     <ion-toolbar>
       <ion-title size="large">Add a property</ion-title>
+      <ion-buttons slot="end">
+        <ion-button color="primary" [disabled]="!form.valid" (click)="onSubmit()">
+          Add
+        </ion-button>
+      </ion-buttons>
     </ion-toolbar>
   </ion-header>
 

@@ -26,7 +26,7 @@
   </div>
 
   <div id="property-container" *ngIf="property">
-    <ion-img class="property-image" src="../../../assets/house-placeholder.jpg" />
+    <ion-img class="property-image" src="{{ getHeaderImage() }}" />
     <div id="property-address">
       <ion-text>
         <h1>{{ property.name }}</h1>

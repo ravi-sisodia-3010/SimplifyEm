@@ -164,9 +164,11 @@ export class PropertyService {
   }
 
   uploadPropertyPhotos(files: string[], propertyId: string) {
+    var paths = <string[]>[]
     const uploadFilePromises = files.map((file, index) => {
-      const fileName = `${Date.now()}_${index + 1}.pdf`
+      const fileName = `${Date.now()}_${index + 1}.jpg`
       const path = `properties/${propertyId}/photos/${fileName}`
+      paths.push(path)
       return this.fileUploadService.uploadFile(file, path)
     })
     const executePromisesSequentially = async () => {
@@ -182,9 +184,7 @@ export class PropertyService {
       }
       properties[index].photos = [
         ...properties[index].photos,
-        ...results.map((result) => {
-          return result.uri
-        })
+        ...paths
       ]
       this.__save(properties)
 
