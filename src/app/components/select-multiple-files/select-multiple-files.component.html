@@ -1,0 +1,21 @@
+<ion-input
+  *ngIf="selectedFiles.length == 0"
+  type="file" accept="image/*" multiple (change)="onFilesSelected($event)"
+  [label]="label" labelPlacement="stacked" [placeholder]="placeholder"/>
+
+<div *ngIf="selectedFiles.length > 0">
+  <ion-text>
+    {{ label }}
+  </ion-text>
+  <div class="selected-files-list">
+    <div
+      *ngFor="let selectedFile of selectedFiles; index as i"
+      class="selected-file-container" >
+      <ion-img
+        class="selected-file-thumbnail"
+        src="{{sanitizedSrc(selectedFile)}}"  />
+      <div class="selected-file-overlay"></div>
+      <ion-icon class="selected-file-bin" name="trash" (click)="onDeleteFileClicked(i)" />
+    </div>
+  </div>
+</div>

@@ -8,6 +8,7 @@ import { AddPropertyPage } from './add-property/add-property.page';
 import { PropertyDetailsPage } from './property-details/property-details.page';
 import { InteractiveMessageComponent } from 'src/app/components/interactive-message/interactive-message.component';
 import { AddTenantPage } from './add-tenant/add-tenant.page';
+import { SelectMultipleFilesComponent } from 'src/app/components/select-multiple-files/select-multiple-files.component';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { AddTenantPage } from './add-tenant/add-tenant.page';
     IonicModule,
     ReactiveFormsModule,
     PropertyRoutingModule,
-    InteractiveMessageComponent
+    InteractiveMessageComponent,
+    SelectMultipleFilesComponent
   ],
   declarations: [
 	  AddPropertyPage,

@@ -65,6 +65,16 @@
           label="Postal Code" labelPlacement="floating" placeholder="Postal Code" />
       </ion-item>
     </ion-item-group>
+
+    <ion-item-group formControlName="photos">
+      <ion-item lines="none">
+        <select-multiple-files
+          accept="image/*" (onFilesSelected)="onPhotosSelected($event)"
+          label="Property Photos(s)" placeholder="Please upload property photo(s)">
+
+        </select-multiple-files>
+      </ion-item>
+    </ion-item-group>
   </form>
 
   <ion-alert

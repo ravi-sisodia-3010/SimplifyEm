@@ -1,3 +1,4 @@
+import { WriteFileResult } from '@capacitor/filesystem';
 import { FileUploadService } from './file-upload.service';
 import { TenantService, TenantWithoutId } from './tenant.service';
 import { EventEmitter, Injectable } from '@angular/core';
@@ -89,6 +90,7 @@ export class PropertyService {
     this.__save(properties)
 
     localStorage.setItem("propertyIdCounter", newId)
+    return newId
   }
 
   updateProperty(property: Property) {
@@ -149,8 +151,8 @@ export class PropertyService {
   }
 
   updateRentAgreement(file: string, propertyId: string, tenantId: string) {
-    let fileName = `rentAgreement_${Date.now()}.pdf`
-    let path = `properties/${propertyId}/tenants/${tenantId}/${fileName}`
+    const fileName = `rentAgreement_${Date.now()}.pdf`
+    const path = `properties/${propertyId}/tenants/${tenantId}/${fileName}`
     return new Promise<string>((resolve, reject) => {
       this.fileUploadService.uploadFile(file, path).then((result) => {
         this.tenantService.updateRentAgreement(path, tenantId)
@@ -159,6 +161,36 @@ export class PropertyService {
         reject(this.__getMessage(error))
       })
     })
+  }
+
+  uploadPropertyPhotos(files: string[], propertyId: string) {
+    const uploadFilePromises = files.map((file, index) => {
+      const fileName = `${Date.now()}_${index + 1}.pdf`
+      const path = `properties/${propertyId}/photos/${fileName}`
+      return this.fileUploadService.uploadFile(file, path)
+    })
+    const executePromisesSequentially = async () => {
+      const results = await uploadFilePromises.reduce(async (accumulator, currentPromise) => {
+        const results = await accumulator;
+        return [...results, await currentPromise];
+      }, Promise.resolve(<WriteFileResult[]>[]));
+
+      let properties = this.__get()
+      let index = properties.findIndex((property) => property.id == propertyId)
+      if (index == -1) {
+        return results
+      }
+      properties[index].photos = [
+        ...properties[index].photos,
+        ...results.map((result) => {
+          return result.uri
+        })
+      ]
+      this.__save(properties)
+
+      return results
+    };
+    return executePromisesSequentially();
   }
 }
 

@@ -1,0 +1,53 @@
+
+.selected-files-list {
+	display: flex;
+	flex-wrap: wrap;
+
+	.selected-file-container {
+		margin: 8px;
+
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	
+		.selected-file-thumbnail {
+			width: 64px;
+			height: 64px;
+			border: 1px solid var(--ion-color-light);
+
+			opacity: 1;
+			transition: .5s ease;
+  			backface-visibility: hidden;
+		}
+
+		.selected-file-overlay {
+			position: absolute;
+			background-color: black;
+			width: 64px;
+			height: 64px;
+
+			transition: .5s ease;
+  			opacity: 0;
+		}
+
+		.selected-file-bin {
+			position: absolute;
+			color: var(--ion-color-primary-contrast);
+
+			transition: .5s ease;
+  			opacity: 0;
+		}
+	}
+
+	.selected-file-container:hover .selected-file-thumbnail {
+		opacity: 0.7;
+	}
+
+	.selected-file-container:hover .selected-file-overlay {
+		opacity: 0.3;
+	}
+
+	.selected-file-container:hover .selected-file-bin {
+		opacity: 1;
+	}
+}

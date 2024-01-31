@@ -1,8 +1,7 @@
-import { PropertyWithoutId } from '../../../services/property.service';
-import { CommonModule } from '@angular/common';
+import { Property, PropertyWithoutId } from '../../../services/property.service';
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AlertOptions, IonicModule, NavController } from '@ionic/angular';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AlertOptions, NavController } from '@ionic/angular';
 import { PropertyService } from 'src/app/services/property.service';
 
 @Component({
@@ -20,8 +19,10 @@ export class AddPropertyPage {
       state: new FormControl('', [Validators.required]),
       country: new FormControl('', [Validators.required]),
       postalCode: new FormControl('', [Validators.required]),
-    })
+    }),
+    photos: new FormArray([new FormGroup({})])
   })
+  selectedPhotos: string[] = []
 
   alertOptions?: AlertOptions
 
@@ -79,17 +80,8 @@ export class AddPropertyPage {
       tenants: []
     }
     try {
-      this.propertyService.addProperty(property)
-      this.alertOptions = {
-        message: "Property successfully added.",
-        buttons: [{
-          text: "Ok!",
-          handler: () => {
-            this.alertOptions = undefined
-            this.navController.back()
-          }
-        }]
-      }
+      let propertyId = this.propertyService.addProperty(property)
+      this.uploadPhotos(propertyId)
     } catch (error) {
       let message: string
       if (typeof error === 'string') {
@@ -101,6 +93,19 @@ export class AddPropertyPage {
       }
 
       this.failedToAddProperty(message)
+    }
+  }
+
+  propertyUploadedSuccessfully() {
+    this.alertOptions = {
+      message: "Property successfully added.",
+      buttons: [{
+        text: "Ok!",
+        handler: () => {
+          this.alertOptions = undefined
+          this.navController.back()
+        }
+      }]
     }
   }
 
@@ -123,6 +128,32 @@ export class AddPropertyPage {
           this.navController.back()
         }
       }]
+    }
+  }
+
+  onPhotosSelected(photos: [string]) {
+    this.selectedPhotos = photos
+  }
+
+  uploadPhotos = async (propertyId: string) => {
+    if (this.selectedPhotos.length == 0) {
+      return this.propertyUploadedSuccessfully()
+    }
+    try {
+      await this.propertyService.uploadPropertyPhotos(this.selectedPhotos, propertyId)
+      this.propertyUploadedSuccessfully()
+    } catch {
+      this.alertOptions = {
+        header: "Property added successfully.",
+        message: "But failed to upload property photos. Please try again later from property details page.",
+        buttons: [{
+          text: "Ok!",
+          handler: () => {
+            this.alertOptions = undefined
+            this.navController.back()
+          }
+        }]
+      }
     }
   }
 }
