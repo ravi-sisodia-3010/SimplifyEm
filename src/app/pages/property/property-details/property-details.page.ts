@@ -8,7 +8,7 @@ import { Property, PropertyService } from 'src/app/services/property.service';
 import { Tenant } from 'src/app/services/tenant.service';
 
 @Component({
-  selector: 'app-property-details',
+  selector: 'property-details',
   templateUrl: './property-details.page.html',
   styleUrls: ['./property-details.page.scss'],
 })

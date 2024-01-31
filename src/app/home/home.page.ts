@@ -44,7 +44,7 @@ export class HomePage {
     console.log('propertiesLoaded:', properties)
     this.loading = false
     this.properties = properties
-    if (properties.length == 0) {
+    if (this.properties.length == 0) {
       this.interactiveMessage = {
         message: "Looks like you haven't registered any property yet. Want to register one?",
         actionText: "Add Property",

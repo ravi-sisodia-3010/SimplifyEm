@@ -20,8 +20,9 @@ import { SelectMultipleFilesComponent } from 'src/app/components/select-multiple
     SelectMultipleFilesComponent
   ],
   declarations: [
-	  AddPropertyPage,
+	  
 	  PropertyDetailsPage,
+    AddPropertyPage,
     AddTenantPage
   ]
 })

@@ -1,6 +1,6 @@
-import { Property, PropertyWithoutId } from '../../../services/property.service';
+import { PropertyWithoutId } from '../../../services/property.service';
 import { Component } from '@angular/core';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AlertOptions, NavController } from '@ionic/angular';
 import { PropertyService } from 'src/app/services/property.service';
 
@@ -19,8 +19,7 @@ export class AddPropertyPage {
       state: new FormControl('', [Validators.required]),
       country: new FormControl('', [Validators.required]),
       postalCode: new FormControl('', [Validators.required]),
-    }),
-    photos: new FormArray([new FormGroup({})])
+    })
   })
   selectedPhotos: string[] = []
 
