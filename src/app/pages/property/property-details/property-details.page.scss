@@ -18,8 +18,12 @@
 	}
 }
 
-.property-image {
+.property-header-image {
 	height: 250px;
 	width: 100%;
 	object-fit: fill;
+}
+
+.ion-item-transparent {
+	background-color: rgba(0, 0, 0, 0);
 }

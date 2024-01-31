@@ -26,7 +26,7 @@
   </div>
 
   <div id="property-container" *ngIf="property">
-    <ion-img class="property-image" src="{{ headerImageData ?? '../../../assets/house-placeholder.jpg' }}" />
+    <ion-img class="property-header-image" src="{{ headerImageData ?? '../../../assets/house-placeholder.jpg' }}" />
     <div id="property-address">
       <ion-text>
         <h1>{{ property.name }}</h1>
@@ -41,15 +41,34 @@
         <h6>{{ property.address.country + ", " + property.address.postalCode }}</h6>
       </ion-text>
     </div>
-    <image-grid
-      *ngIf="photosDataKeys.length > 0"
-      [images]="photosDataKeys" (onDeleteImageClicked)="onDeletePhotoClicked($event)"
-      label="Property Photos(s)">
-    </image-grid>
+    <ion-item>
+      <div style="display: flex; flex-direction: column; flex: 1">
+        <div style="display: flex; flex-direction: row; align-self: stretch; justify-content: space-between;">
+          <ion-label><h1>Property Photo(s)</h1></ion-label>
+          <ion-buttons slot="end">
+            <ion-button color="primary" (click)="onAddPropertyPhotosClicked()">
+              Add
+              <select-multiple-files
+                id="select-multiple-files"
+                [hidden]="true"
+                accept="image/*" (onFilesSelected)="onPhotosSelected($event)"
+                label="Property Photos(s)" placeholder="Please upload property photo(s)">
+              </select-multiple-files>
+            </ion-button>
+          </ion-buttons>
+        </div>
+        <image-grid
+          class="property-photos"
+          *ngIf="photosDataKeys.length > 0"
+          [images]="photosDataKeys" (onDeleteImageClicked)="onDeletePhotoClicked($event)"
+          label="Property Photos(s)" [labelHidden]="true">
+        </image-grid>
+      </div>
+    </ion-item>
     <ion-list>
       <ion-item-group>
         <ion-item-divider>
-          <ion-label>Tenants</ion-label>
+          <ion-label><h1 style="color: var(--ion-color-dark);">Tenants</h1></ion-label>
           <ion-buttons slot="end">
             <ion-button color="primary" (click)="onAddTenantClicked()">Add</ion-button>
           </ion-buttons>

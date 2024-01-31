@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Directory, Encoding, Filesystem } from '@capacitor/filesystem';
-import { NavController } from '@ionic/angular';
+import { AlertOptions, NavController } from '@ionic/angular';
 import { InteractiveMessageComponent } from 'src/app/components/interactive-message/interactive-message.component';
 import { Property, PropertyService } from 'src/app/services/property.service';
 import { Tenant } from 'src/app/services/tenant.service';
@@ -31,6 +31,10 @@ export class PropertyDetailsPage {
   photosData: {
     [key: string]: string 
   } = {}
+
+  selectedPhotos: string[] = []
+
+  alertOptions?: AlertOptions
 
   constructor(
     activatedRoute: ActivatedRoute,
@@ -131,6 +135,10 @@ export class PropertyDetailsPage {
     console.log('hideRentAgreement:', this.pdfURL)
   }
 
+  onAddPropertyPhotosClicked() {
+    document.getElementById("select-multiple-files")?.getElementsByTagName("input")[0].click()
+  }
+
   onDeletePhotoClicked(index: number) {
     console.log('onDeletePhotoClicked:', index)
     const data = this.photosDataKeys[index]
@@ -141,5 +149,43 @@ export class PropertyDetailsPage {
     this.photosDataKeys.splice(index, 1)
     delete this.photosData[data]
     console.log('onDeletePhotoClicked: success:', this.photosDataKeys.length, this.property?.photos.length, path)
+  }
+
+  onPhotosSelected(photos: [string]) {
+    this.selectedPhotos = photos
+    this.uploadPhotos(this.propertyId)
+  }
+
+  uploadPhotos = async (propertyId: string) => {
+    if (this.selectedPhotos.length == 0) {
+      return this.propertyPhotosUploadedSuccessfully()
+    }
+    try {
+      await this.propertyService.uploadPropertyPhotos(this.selectedPhotos, propertyId)
+      this.propertyPhotosUploadedSuccessfully()
+    } catch {
+      this.alertOptions = {
+        header: "Failed to upload property.",
+        buttons: [{
+          text: "Try Later!",
+          handler: () => {
+            this.alertOptions = undefined
+          }
+        }]
+      }
+    }
+  }
+
+  propertyPhotosUploadedSuccessfully = () => {
+    this.alertOptions = {
+      header: "Property added successfully.",
+      message: "But failed to upload property photos. Please try again later from property details page.",
+      buttons: [{
+        text: "Ok!",
+        handler: () => {
+          this.alertOptions = undefined
+        }
+      }]
+    }
   }
 }

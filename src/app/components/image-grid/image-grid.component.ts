@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 
 @Component({
@@ -10,10 +10,12 @@ import { IonicModule } from '@ionic/angular';
   imports: [
     CommonModule,
     IonicModule
-  ]
+  ],
+  encapsulation: ViewEncapsulation.ShadowDom
 })
 export class ImageGridComponent {
   @Input("label") label = ""
+  @Input("labelHidden") labelHidden = false
   @Output("onDeleteImageClicked") imageDeleted = new EventEmitter<number>()
 
   @Input("images") images: string[] = []
