@@ -9,6 +9,7 @@ import { PropertyDetailsPage } from './property-details/property-details.page';
 import { InteractiveMessageComponent } from 'src/app/components/interactive-message/interactive-message.component';
 import { AddTenantPage } from './add-tenant/add-tenant.page';
 import { SelectMultipleFilesComponent } from 'src/app/components/select-multiple-files/select-multiple-files.component';
+import { ImageGridComponent } from 'src/app/components/image-grid/image-grid.component';
 
 @NgModule({
   imports: [
@@ -17,7 +18,8 @@ import { SelectMultipleFilesComponent } from 'src/app/components/select-multiple
     ReactiveFormsModule,
     PropertyRoutingModule,
     InteractiveMessageComponent,
-    SelectMultipleFilesComponent
+    SelectMultipleFilesComponent,
+    ImageGridComponent
   ],
   declarations: [
 	  

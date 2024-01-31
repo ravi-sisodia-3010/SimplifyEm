@@ -68,10 +68,14 @@
     <ion-item-group>
       <ion-item lines="none">
         <select-multiple-files
+          *ngIf="selectedPhotos.length == 0"
           accept="image/*" (onFilesSelected)="onPhotosSelected($event)"
           label="Property Photos(s)" placeholder="Please upload property photo(s)">
-
         </select-multiple-files>
+        <image-grid
+          *ngIf="selectedPhotos.length > 0"
+          [images]="selectedPhotos" label="Property Photos(s)">
+        </image-grid>
       </ion-item>
     </ion-item-group>
   </form>

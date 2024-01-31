@@ -192,6 +192,19 @@ export class PropertyService {
     };
     return executePromisesSequentially();
   }
+
+  deletePropertyPhotos(photos: string[], propertyId: string) {
+    let properties = this.__get()
+      let index = properties.findIndex((property) => property.id == propertyId)
+      if (index == -1) {
+        return false
+      }
+      properties[index].photos = properties[index].photos.filter((photo) => {
+        return !photos.includes(photo)
+      })
+      this.__save(properties)
+      return true
+  }
 }
 
 export interface PropertyWithoutId {

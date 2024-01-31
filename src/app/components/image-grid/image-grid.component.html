@@ -1,0 +1,14 @@
+<ion-text>
+  {{ label }}
+</ion-text>
+<div class="selected-files-list">
+  <div
+    *ngFor="let image of images; index as i"
+    class="selected-file-container" >
+    <ion-img
+      class="selected-file-thumbnail"
+      src="{{ image }}"  />
+    <div class="selected-file-overlay"></div>
+    <ion-icon class="selected-file-bin" name="trash" (click)="onDeleteImageClicked(i)" />
+  </div>
+</div>

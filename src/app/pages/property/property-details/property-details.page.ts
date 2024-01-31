@@ -26,7 +26,11 @@ export class PropertyDetailsPage {
   pdfURL?: string
   pdfData?: SafeHtml
 
-  photoURLs: {[key: string]: string | Blob} = {}
+  headerImageData?: string
+  photosDataKeys: string[] = []
+  photosData: {
+    [key: string]: string 
+  } = {}
 
   constructor(
     activatedRoute: ActivatedRoute,
@@ -64,12 +68,17 @@ export class PropertyDetailsPage {
     this.interactiveMessage = undefined
     this.propertyService.propertyListUpdated.subscribe(this.loadPropertyDetails)
 
+    this.photosData = {}
     this.property.photos.forEach((photo) => {
       Filesystem.readFile({
         path: photo,
         directory: Directory.External
       }).then((result) => {
-        this.photoURLs[photo] = `data:image/*;base64,${result.data}`
+        if (photo == this.property?.photos[0]) {
+          this.headerImageData = `data:image/*;base64,${result.data}`
+        }
+        this.photosData[`data:image/*;base64,${result.data}`] = photo
+        this.photosDataKeys = Object.keys(this.photosData)
       })
     })
   }
@@ -122,10 +131,15 @@ export class PropertyDetailsPage {
     console.log('hideRentAgreement:', this.pdfURL)
   }
 
-  getHeaderImage() {
-    if (!this.property || this.property.photos.length == 0) {
-      return '../../../assets/house-placeholder.jpg'
+  onDeletePhotoClicked(index: number) {
+    console.log('onDeletePhotoClicked:', index)
+    const data = this.photosDataKeys[index]
+    const path = this.photosData[data]
+    if (!path || !this.propertyService.deletePropertyPhotos([path], this.propertyId)) {
+      return console.log('onDeletePhotoClicked: failed')
     }
-    return this.photoURLs[this.property.photos[0]] ?? '../../../assets/house-placeholder.jpg'
+    this.photosDataKeys.splice(index, 1)
+    delete this.photosData[data]
+    console.log('onDeletePhotoClicked: success:', this.photosDataKeys.length, this.property?.photos.length, path)
   }
 }

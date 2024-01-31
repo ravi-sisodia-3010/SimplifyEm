@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
 import { IonicModule } from '@ionic/angular';
+import { ImageGridComponent } from '../image-grid/image-grid.component';
 
 @Component({
   selector: 'select-multiple-files',
@@ -10,7 +10,8 @@ import { IonicModule } from '@ionic/angular';
   styleUrls: ['./select-multiple-files.component.scss'],
   imports: [
     CommonModule,
-    IonicModule
+    IonicModule,
+    ImageGridComponent
   ]
 })
 export class SelectMultipleFilesComponent {
@@ -20,14 +21,6 @@ export class SelectMultipleFilesComponent {
   @Output("onFilesSelected") filesSelected = new EventEmitter()
 
   selectedFiles: string[] = []
-
-  constructor(private sanitizer: DomSanitizer) {
-
-  }
-
-  sanitizedSrc(file: string) {
-    return file
-  }
 
   onFilesSelected(event: Event) {
     this.selectedFiles = []
@@ -53,10 +46,5 @@ export class SelectMultipleFilesComponent {
       reader.readAsDataURL(files[index])
     }
     readFile([], 0)
-  }
-
-  onDeleteFileClicked(index: number) {
-    this.selectedFiles.splice(index, 1)
-    this.filesSelected.emit(this.selectedFiles)
   }
 }
